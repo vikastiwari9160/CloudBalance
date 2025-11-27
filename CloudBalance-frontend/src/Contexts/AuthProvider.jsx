@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useEffect, useState } from 'react'
+import React, { createContext, useContext, useState } from 'react'
 
 const AuthContext = createContext();
 
@@ -8,13 +8,11 @@ const useAuth= ()=>{
 
 const AuthProvider = ({children}) => {
 
-    const [isAuthenticated,setisAuthenticated] = useState(()=>{
-        return localStorage.getItem("isAuthenticated")===true?true:false;
-    });
+    const result = localStorage.getItem("isAuthenticated");
 
-    // useEffect(()=>{
-    //     setisAuthenticated(()=>localStorage.getItem("isAuthenticated")===true?true:false;)
-    // },[isAuthenticated])
+    const [isAuthenticated,setisAuthenticated] = useState(()=>{
+        return result==="true"?true:false;
+    });
 
     return (
         <AuthContext.Provider value={{isAuthenticated,setisAuthenticated}}>

@@ -9,9 +9,9 @@ const unprotectedRoutesData = [
 
 const UnprotectedRoutes = () => {
   return (
-    <Routes>
-      <Route path='/login' element={<Login/>}/>
-     </Routes>
+    <>
+      <Route path='login' element={<Login/>}/>
+    </>
   )
 }
 

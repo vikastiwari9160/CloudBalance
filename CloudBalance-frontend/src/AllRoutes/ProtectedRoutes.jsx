@@ -2,9 +2,11 @@ import React from 'react'
 import { Routes, Route } from 'react-router-dom'
 import Dashboard from '../Pages/Dashboard'
 import RouteProtector from './RouteProtector'
+import Usermanagement from '../Components/Usermanagement'
 
 const protectedRoutesData = [
   {key:"dashboard", path:"/dashboard", element:<Dashboard/> },
+  // {key:"usermanagement", path:"/dashboard/usermanagement", element:<Dashboard><Usermanagement/></Dashboard> }
 ]
 
 const ProtectedRoutes = () => {

@@ -2,6 +2,7 @@ import { useAccount } from "../Contexts/AccountProvider";
 import MenuIcon from '@mui/icons-material/Menu';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import LogoutIcon from '@mui/icons-material/Logout';
+import { useSideMenuContext } from "../Contexts/SideMenuToggleProvider";
 
 const Navbar = () => {
 
@@ -16,17 +17,21 @@ const Navbar = () => {
         setAccount(e.target.value);
     }
 
+    const {fullMenu,setFullMenu} = useSideMenuContext();
+
   return (
     <>
-    <nav className="flex flex-row justify-between h-16 px-10 shadow-lg shadow-gray">
+    <nav className="flex flex-row justify-between bg-white w-full h-16 px-10 shadow-lg shadow-gray  z-30">
         <div className="flex flex-row justify-around w-100 items-center">
             <img className="w-40" src="/src/assets/Cloudkeeper_New.svg" alt="" />
-            <MenuIcon sx={{ width:25, height:25, color:'#075985'}} />
+            <button onClick={()=>{fullMenu?setFullMenu(false):setFullMenu(true)}}>
+                <MenuIcon sx={{ width:25, height:25, color:'#075985'}} />
+            </button>
             <div>
                 <p className="font-bold text-xs" >Accounts</p>
                 <select className="w-40 border border-amber-600" name="account" id="account" onChange={handleAccountSelection}>
                     {options.map((optionData)=>{
-                        <option value={optionData.value}>{optionData.label}</option>
+                        return <option key={optionData.value} value={optionData.value}>{optionData.label}</option>
                     })}
                 </select>
             </div>

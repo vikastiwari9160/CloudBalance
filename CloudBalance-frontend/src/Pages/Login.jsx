@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../Contexts/AuthProvider';
 
@@ -6,8 +6,14 @@ const Login = () => {
 
   const navigate = useNavigate();
 
-  const {setisAuthenticated} = useAuth();
+  const {isAuthenticated, setisAuthenticated} = useAuth();
 
+  useEffect(()=>{
+    if(isAuthenticated){
+      navigate('/dashboard');
+    }
+  },[isAuthenticated,navigate])
+  
   const [invalid,setInvalid] = useState(false);
 
   const [data, setData] = useState({
@@ -46,10 +52,10 @@ const Login = () => {
 
   return (
     <>
-      <div className="flex items-center justify-center min-h-screen">
-        <div className="bg-white mb-40 p-6 rounded-lg w-96 border-4 border-amber-600">
+      <div className=" min-h-screen">
+        <div className="mx-auto mt-48 bg-white p-6 rounded-lg w-96 ">
           <img 
-            src="../src/assets/CloudKeeper_Logo.jpg" 
+            src="/src/assets/Cloudkeeper_New.svg" 
             alt="CloudKeeper Logo" 
             className=" w-40 h-20 mx-auto " 
           />

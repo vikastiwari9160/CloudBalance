@@ -11,8 +11,6 @@ const AccountProvider = () => {
 
     const [account,setAccount] = useState("select an account");
 
-    console.log("in Account Provider");
-
   return (
     <AuthContext.Provider value={{account,setAccount}}>
         <Outlet/>
