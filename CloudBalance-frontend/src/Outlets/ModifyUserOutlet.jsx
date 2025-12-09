@@ -7,13 +7,11 @@ const ModifyUserOutlet = (props) => {
         lastName: props.lastName || '',
         emailId: props.emailId || '',
         roles: props.roles || [],
-
     });
 
     const handleOnChange = (e) => {
 
         if(Array.isArray(data[e.target.name])){
-
             const values = Array.from(e.target.selectedOptions).map(option=>option.value);
             setData({
                 ...data,
@@ -97,7 +95,7 @@ const ModifyUserOutlet = (props) => {
                             </label>
                             <select
                                 multiple
-                                name="Role"
+                                name="roles"
                                 id="RoleSelector"
                                 value={data.roles || []}
                                 onChange={handleOnChange}

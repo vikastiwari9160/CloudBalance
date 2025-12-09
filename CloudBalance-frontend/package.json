@@ -15,8 +15,10 @@
     "@mui/icons-material": "^7.3.5",
     "@mui/material": "^7.3.5",
     "@tailwindcss/vite": "^4.1.17",
+    "fusioncharts": "^4.2.0",
     "react": "^18.02.0",
     "react-dom": "^18.02.0",
+    "react-fusioncharts": "^4.2.0",
     "react-router-dom": "^7.9.6",
     "tailwindcss": "^4.1.17"
   },

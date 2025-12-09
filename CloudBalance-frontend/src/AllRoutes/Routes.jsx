@@ -6,7 +6,6 @@ import { AuthProvider } from '../Contexts/AuthProvider'
 import { AccountProvider } from '../Contexts/AccountProvider'
 import Usermanagement from '../Pages/UserManagement/UserManagement'
 import Onboarding from '../Components/Onboarding'
-import Costexplorer from '../Components/Costexplorer'
 import Awsservices from '../Components/Awsservices'
 import Login from '../Pages/Login'
 import Dashboard from '../Pages/Dashboard'
@@ -14,6 +13,9 @@ import DashboardOutlet from '../Outlets/DashboardOutlet'
 import ModifyUserOutlet from '../Outlets/ModifyUserOutlet'
 import AddUser from '../Pages/UserManagement/AddUser'
 import EditUser from '../Pages/UserManagement/EditUser'
+import CostExplorerOutlet from '../Outlets/CostExplorerOutlet'
+import Core from '../Pages/CostExplorer/Core'
+import { SideFiltersProvider } from '../Contexts/SideFiltersProvider'
 
 const CustomRoutes = () => {
   return (
@@ -30,7 +32,11 @@ const CustomRoutes = () => {
                 </Route>
                 <Route path='onboarding' element={<Onboarding />}></Route>
                 <Route path='aws-services' element={<Awsservices />}></Route>
-                <Route path='cost-explorer' element={<Costexplorer />}></Route>
+                <Route element={<SideFiltersProvider/>}>
+                  <Route path='cost-explorer' element={<CostExplorerOutlet/>}>
+                    <Route index element={<Core/>}></Route>
+                  </Route>
+                </Route>
               </Route>
             </Route>
             {/* {protectedRoutesData.map((data)=><Route key={data.key} path={data.path} element={data.element}/>)} */}
