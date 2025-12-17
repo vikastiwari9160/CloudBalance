@@ -37,7 +37,7 @@ const DashboardOutlet = () => {
                   )
                 })}
               </div>
-              <Outleit />
+              <Outlet />
             </div>
             <div className='grow relative'>
               <div className='absolute bottom-0 bg-white w-full' >
