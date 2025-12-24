@@ -1,4 +1,3 @@
-import React from 'react'
 import Navbar from '../Components/Navbar'
 import { Link, Outlet, useLocation } from 'react-router-dom'
 import Sidebar from '../Components/Sidebar'
@@ -6,10 +5,12 @@ import Footer from '../Components/Footer'
 import { SideMenuToggleProvider } from '../Contexts/SideMenuToggleProvider'
 import { breadcrumbsEnum } from '../Enums/Breadcrumbs'
 import { UrlEnums } from '../Enums/UrlEnum'
+import React from 'react'
 
 const DashboardOutlet = () => {
 
   const currLocation = useLocation();
+
   const breadcrumbs = currLocation.pathname.split('/')
     .map(dir => {
       return breadcrumbsEnum[dir];
@@ -32,7 +33,7 @@ const DashboardOutlet = () => {
                   return (
                     <React.Fragment key={index}>
                       < Link to={UrlEnums[dir]} className='inline-block text-sm text-gray-800 hover:underline' >{dir}</Link>
-                      {(index < breadcrumbs.length - 1)?<p className=' px-2 inline-block font-bold'> &gt; </p>:''}
+                      {(index < breadcrumbs.length - 1) ? <p className=' px-2 inline-block font-bold'> &gt; </p> : ''}
                     </React.Fragment>
                   )
                 })}

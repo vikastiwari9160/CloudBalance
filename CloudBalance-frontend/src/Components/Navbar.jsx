@@ -1,25 +1,27 @@
-import { useAccount } from "../Contexts/AccountProvider";
 import MenuIcon from '@mui/icons-material/Menu';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import LogoutIcon from '@mui/icons-material/Logout';
 import { useSideMenuContext } from "../Contexts/SideMenuToggleProvider";
 import { useLocation } from "react-router-dom";
+import { useDispatch, useSelector } from 'react-redux';
 
 const Navbar = () => {
 
-    const {setAccount} = useAccount();
-
     const location = useLocation();
-
+    
+    const dispatch = useDispatch();
+    
+    const {userName, accounts} = useSelector(state=> state);
+    
     console.log(location.pathname);
-
-    const options=[
-        {label:"Account 1", value:"Accoint 1"},
-        {label:"Account 2", value:"Accoint 2"}
-    ]
+    
+    const options=accounts;
 
     const handleAccountSelection = (e) => {
-        setAccount(e.target.value);
+        dispatch({
+            type:"set_account",
+            payload: e.target.value
+        })
     }
 
     const {fullMenu,setFullMenu} = useSideMenuContext();
@@ -47,7 +49,7 @@ const Navbar = () => {
                 <div>
                     <p className="text-xs">Welcome,</p>
                     {/*logic Need to be updated after redux */}
-                    <p className="font-bold text-sm text-sky-800">CkerAdmin</p>
+                    <p className="font-bold text-sm text-sky-800">{userName}</p>
                 </div>
             </div>
             <div>

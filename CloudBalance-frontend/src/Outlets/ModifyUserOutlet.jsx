@@ -5,24 +5,16 @@ const ModifyUserOutlet = (props) => {
     const [data, setData] = useState({
         firstName: props.firstName || '',
         lastName: props.lastName || '',
-        emailId: props.emailId || '',
-        roles: props.roles || [],
+        email: props.email || '',
+        role: props.role,
+        password: ''
     });
 
     const handleOnChange = (e) => {
-
-        if(Array.isArray(data[e.target.name])){
-            const values = Array.from(e.target.selectedOptions).map(option=>option.value);
-            setData({
-                ...data,
-                [e.target.name]: values
-            });
-        }else{
-            setData({
-                ...data,
-                [e.target.name]:e.target.value
-            })
-        }
+        setData({
+            ...data,
+            [e.target.name]: e.target.value
+        })
     }
 
     return (
@@ -40,7 +32,7 @@ const ModifyUserOutlet = (props) => {
                                 htmlFor="firstName"
                                 className='mb-2 text-sm font-bold text-gray-700'
                             >
-                                First Name <span className='text-red-600'>*</span>
+                                First Name
                             </label>
                             <input
                                 type="text"
@@ -57,7 +49,7 @@ const ModifyUserOutlet = (props) => {
                                 htmlFor="lastName"
                                 className='mb-2 text-sm font-medium text-gray-700'
                             >
-                                Last Name <span className='text-red-600'>*</span>
+                                Last Name
                             </label>
                             <input
                                 type="text"
@@ -71,16 +63,16 @@ const ModifyUserOutlet = (props) => {
                         </div>
                         <div className="flex flex-col">
                             <label
-                                htmlFor="emailid"
+                                htmlFor="email"
                                 className='mb-2 text-sm font-medium text-gray-700'
                             >
                                 Email ID <span className='text-red-600'>*</span>
                             </label>
                             <input
                                 type="email"
-                                name='emailId'
-                                id='emailId'
-                                value={data.emailId || ''}
+                                name='email'
+                                id='email'
+                                value={data.email || ''}
                                 onChange={handleOnChange}
                                 placeholder='Enter Email ID'
                                 className='p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 transition duration-150 ease-in-out'
@@ -94,10 +86,9 @@ const ModifyUserOutlet = (props) => {
                                 User Role <span className='text-red-600'>*</span>
                             </label>
                             <select
-                                multiple
-                                name="roles"
+                                name="role"
                                 id="RoleSelector"
-                                value={data.roles || []}
+                                value={data.role}
                                 onChange={handleOnChange}
                                 className='p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 bg-white appearance-none transition duration-150 ease-in-out'
                             >
@@ -105,6 +96,23 @@ const ModifyUserOutlet = (props) => {
                                 <option value="readonly">Read Only</option>
                                 <option value="admin">Admin</option>
                             </select>
+                        </div>
+                        <div className="flex flex-col">
+                            <label
+                                htmlFor="password"
+                                className='mb-2 text-sm font-medium text-gray-700'
+                            >
+                                Password <span className='text-red-600'>*</span>
+                            </label>
+                            <input
+                                type="text"
+                                name='password'
+                                id='password'
+                                value={data.password || ''}
+                                onChange={handleOnChange}
+                                placeholder='Enter Password'
+                                className='p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 transition duration-150 ease-in-out'
+                            />
                         </div>
                     </div>
                     <button

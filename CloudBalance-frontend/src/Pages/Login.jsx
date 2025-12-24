@@ -1,25 +1,28 @@
-import React, { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom';
-import { useAuth } from '../Contexts/AuthProvider';
 import RemoveRedEyeIcon from '@mui/icons-material/RemoveRedEye';
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
-import Footer from '../Components/Footer';
+import axios from 'axios';
+import { useDispatch, useSelector } from 'react-redux';
 
 const Login = () => {
 
   const navigate = useNavigate();
 
-  const {isAuthenticated, setisAuthenticated} = useAuth();
+  const {loggedIn} = useSelector(state=>state);
 
-  const {ShowPassword,setShowPassword} = useState(false);
+  const [invalidCredentials,setinvalidCredentials] = useState(false);
+
+  const dispatch = useDispatch();
+
+  // const {ShowPassword,setShowPassword} = useState(false);
 
   useEffect(()=>{
-    if(isAuthenticated){
+    if(loggedIn){
       navigate('/dashboard');
     }
-  },[isAuthenticated,navigate])
+  },[loggedIn,navigate])
   
-  const [invalid,setInvalid] = useState(false);
 
   const [data, setData] = useState({
     Email:'',
@@ -33,26 +36,41 @@ const Login = () => {
     })
   }
 
-  const handleSubmit = (e) =>{
+  const handleSubmit = async (e) =>{
     e.preventDefault();
-
-    // Hardcoded user for now 
-    console.log(data.Email +""+ data.Password)
-    if(data.Email==="CkerAdmin@cloudkeeper.com" && data.Password==="Admin" ){
-      localStorage.setItem('isAuthenticated',true);
-      localStorage.setItem('role','admin');
-      setisAuthenticated(true);
-      navigate('/dashboard');
-    }else if(data.Email=='CkerUser@cloudkeeper.com' && data.Password=='User'){
-      localStorage.setItem('isAuthenticated',true);
-      localStorage.setItem('role','user');
-      setisAuthenticated(true);
-      navigate('/dashboard');
-    }else{
-      setInvalid(true);
-    }
+    try{
+      const res = await axios.post("/api/auth/login",{
+        "username": data.Email,
+        "password": data.Password
+      },
+      {
+        withCredentials: true
+      });
+  
+      if(res.data){
+        const userData = await axios.get("/api/auth/me");
+  
+        if(userData.data && userData.data.active){
+          dispatch({
+            type:"set_loggedIn"
+          });
     
-    console.log("form Submitted");
+          dispatch({
+            type:"set_user",
+            payload:{
+              username: `${!userData.data.firstName?'':userData.data.firstName} 
+                ${!userData.data.LastName?'':userData.data.LastName}`,
+              role:userData.data.role,
+              accounts: userData.data.accounts
+            }
+          })
+        }
+      }else{
+        setinvalidCredentials(true)
+      }
+    }catch(error){
+      console.log(error);
+    }
   }
 
   return (
@@ -85,7 +103,7 @@ const Login = () => {
             {/* <div className=' inline-block absolute right-3 '>
               {ShowPassword?<RemoveRedEyeIcon/>:<VisibilityOffIcon/>}
             </div> */}
-            {invalid?<p className='text-red-600'>User Not Found!</p>:''}
+            {invalidCredentials?<p className='text-red-600'>User Not Found!</p>:''}
             <button 
               type="submit" 
               className="bg-blue-500 text-white p-2 rounded-md w-full hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-400"

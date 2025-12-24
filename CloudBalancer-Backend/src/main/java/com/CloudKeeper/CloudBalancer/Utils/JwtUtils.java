@@ -6,37 +6,29 @@ import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
+import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Component;
 
 import java.security.Key;
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 
 @Component
+@RequiredArgsConstructor
 public class JwtUtils {
 
     @Value("${jwt.secret}")
     private String secret;
 
-    @Value("${jwt.expiration}")
-    private long expiration;
+    private final CustomUserDetailsService userDetailsService;
 
-    private CustomUserDetailsService userDetailsService;
-
-    public JwtUtils(CustomUserDetailsService userDetailsService){
-        this.userDetailsService = userDetailsService;
-    }
 
     private Key getSigningKey() {
         return Keys.hmacShaKeyFor(secret.getBytes());
     }
 
-    public String generateToken(String username, String role) {
+    public String generateToken(String username, String role, Long expiration) {
         return Jwts.builder()
                 .setSubject(username)
                 .claim("role",role)
@@ -54,12 +46,15 @@ public class JwtUtils {
         return getClaims(token).get("role",String.class);
     }
 
+    public Date extractExpireTime(String token){
+        return getClaims(token).getExpiration();
+    }
+
     public boolean validateToken(String token) {
         String username = extractUsername(token);
-        UserDetails user = userDetailsService.loadUserByUsername(username);
-        List<GrantedAuthority> authorities = new ArrayList<>(user.getAuthorities());
-        return extractUsername(token).equals(user.getUsername()) &&
-                extractRole(token).equals(authorities.get(0).getAuthority()) &&
+        UserEntity user = userDetailsService.loadUserByUsername(username);
+        return extractUsername(token).equals(user.getEmail()) &&
+                extractRole(token).equals(user.getRole()) &&
                 !isTokenExpired(token);
     }
 

@@ -19,7 +19,6 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 public class UserEntity implements UserDetails {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -48,8 +47,33 @@ public class UserEntity implements UserDetails {
     @Column(updatable = false)
     private String createdOn;
 
+    @CreationTimestamp
+    @Column(updatable = false)
+    private String createdBy;
+
     @UpdateTimestamp
     private String updatedOn;
+
+    @Column
+    private String updatedBy;
+
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(
+            name = "user_accounts",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "account_id")
+    )
+    private List<AccountEntity> accounts;
+
+    public UserEntity(String firstName, String lastName, String email, String password, String role, String createdBy) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.email = email;
+        this.password = password;
+        this.role = role;
+        this.createdBy = createdBy;
+    }
+
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
